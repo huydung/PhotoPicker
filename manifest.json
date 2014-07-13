@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "PhotosPicker",
+  "description": "If you have hundreds of great photos and need to browse and pick some of them for upload, sharing, edit.... this utility is your best options!",
+  "version": "1.0.0",
+  "minimum_chrome_version": "23",
+  "icons": {
+    "16": "assets/icon_16.png",
+    "128": "assets/icon_128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    "fullscreen",
+    "fileSystem",
+    "fonts.googleapis.com"
+    
+  ]
+}
