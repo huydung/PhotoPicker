@@ -1,0 +1,38 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+
+<polymer-element name="file-picker" attributes="label filePath">
+  <template>
+    <style>
+    :host {
+      display: block;
+      position: relative;
+      padding: 40px 30px 30px 10px;
+      width: auto;
+      float: left;
+    }
+    :host paper-input::shadow, :host paper-input::shadow #input {
+      color: white;
+    }
+    :host paper-input::shadow #floatedLabelSpan {
+      color: #DDD;
+    }
+
+    </style>
+    
+      <paper-input id="sourceFolder" label="{{label}}" floatingLabel="true" value="{{filePath}}"></paper-input>
+  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
+    
+    
+    
+  </template>
+  <script>
+  Polymer('file-picker', {
+    created: function(){
+      //console.log(this);
+    }
+  });
+  
+  </script>
+</polymer-element>

@@ -643,1142 +643,7 @@ polyfill-next-selector { content: ':host .indent'; }
 </template>
 </polymer-element>
 </div>
-  <div hidden><!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
-The complete set of authors may be found at http://polymer.github.io/AUTHORS
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
--->
-
-<!--
-`paper-input` is a single- or multi-line text field where user can enter input.
-It can optionally have a label.
-
-Example:
-
-    <paper-input label="Your Name"></paper-input>
-    <paper-input multiline label="Enter multiple lines here"></paper-input>
-
-@group Paper Elements
-@element paper-input
-@extends core-input
-@homepage github.io
--->
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
-The complete set of authors may be found at http://polymer.github.io/AUTHORS
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
--->
-
-<!--
-/**
- * core-input is an unstyled single- or multi-line text field where user can
- * enter input.
- *
- * Example:
- *
- *     <core-input placeholder="Placeholder text here"></core-input>
- *
- *     <core-input multiline placeholder="Enter multiple lines here"></core-input>
- *
- * The text input's value is considered "committed" if the user hits the `enter`
- * key or blurs the input after changing the value. The "change" event is fired
- * when the value becomes committed, and the committed value is stored in the
- * "value" property. The current value of the input is stored in the "inputValue"
- * property.
- *
- * core-input also can optionally validate the value by providing it with a
- * regular expression to match against, or a validation function. The
- * "input-invalid" event is fired if the input value changes and is invalid.
- * The "invalid" property is also available for observation.
- *
- * Example:
- *
- *     // valid only if the value is a number
- *     <core-input validate="^[0-9]*$" on-input-invalid="{{inputInvalidAction}}"></core-input>
- *
- *     this.$.input.validate = /^[0-9]*$/;  // valid only if the value is a number
- *
- *     this.$.input2.validate = function(value) {
- *       return value === 'foo';  // valid only if the value is 'foo'
- *     }
- *
- * @group Polymer Core Elements
- * @element core-input
- * @homepage github.io
- */
-
-/**
- * Fired when the inputValue of is changed. This is the same event as the DOM
- * "input" event.
- *
- * @event input
- */
-
-/**
- * Fired when the user commits the value of the input, either by the hitting the
- * `enter` key or blurring the input after the changing the inputValue. Also see the
- * DOM "change" event.
- *
- * @event change
- */
-
-/**
- * Fired when the inputValue of this text input changes and fails validation.
- *
- * @event input-invalid
- * @param {Object} detail
- * @param {string} value The text input's inputValue.
- */
--->
-
-
-<polymer-element name="core-input" attributes="value inputValue placeholder disabled multiline rows validate invalid" assetpath="../components/core-input/">
-
-  <template>
-
-    <style>:host {
-  display: inline-block;
-  text-align: inherit;
-  color: #ccc;
-  position: relative;
-  width: 20em;
-}
-
-:host:hover {
-  cursor: text;
-}
-
-input,
-textarea {
-  font: inherit;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-}
-
-textarea {
-  resize: none;
-}
-
-textarea[fit] {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}</style>
-
-    <template if="{{multiline}}">
-      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === &apos;fit&apos;}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
-    </template>
-
-    <template if="{{!multiline}}">
-      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
-    </template>
-
-  </template>
-
   
-
-</polymer-element>
-
-
-<polymer-element name="paper-input" extends="core-input" attributes="label floatingLabel maxRows error" on-down="{{downAction}}" on-up="{{upAction}}" assetpath="../components/paper-input/">
-
-  <template>
-
-    <style>:host {
-  display: inline-block;
-  outline: none;
-  text-align: inherit;
-  color: #757575;
-}
-:host(:hover) {
-  cursor: text;
-}
-
-#container {
-  position: relative;
-}
-
-#inputClone,
-#minInputHeight,
-#maxInputHeight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  padding: 0.5em 0;
-}
-
-:host /deep/ input,
-:host /deep/ textarea {
-  font: inherit;
-  color: #000;
-  padding: 0;
-  /* Important to use margin here so the margin remains visible
-   * when textarea scrolls internally. */
-  margin: 0.5em 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  width: 100%;
-}
-
-.host /deep/ textarea {
-  resize: none;
-}
-
-.focusedColor {
-  color: #4059a9;
-  background: #4059a9;
-}
-
-:host(.invalid) #underline,
-:host(.invalid) #underlineHighlight,
-:host(.invalid) .focusedColor {
-  color: #d34336;
-  background: #d34336;
-}
-:host(.invalid) #floatedLabel {
-  color: #d34336;
-}
-
-#floatedLabel {
-  font-size: 0.75em;
-  background: transparent;
-  white-space: nowrap;
-}
-#floatedLabel.hidden {
-  visibility: hidden;
-}
-#floatedLabel.focused {
-  visibility: visible;
-}
-
-#label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  padding: 0.5em 0;
-  background: transparent;
-  -webkit-transform-origin: 0% 0%;
-  transform-origin: 0% 0%;
-}
-#label.hidden {
-  display: none;
-}
-#label.animating {
-  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
-  transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
-}
-
-#labelSpan {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: inline-block;
-  max-width: 100%;
-}
-
-#errorContainer {
-  visibility: hidden;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-align-items: center;
-  align-items: center;
-}
-
-:host(.invalid) #errorContainer {
-  visibility: visible;
-}
-
-#error {
-  -webkit-flex: 1;
-  flex: 1;
-  color: #d34336;
-  font-size: 0.75em;
-  padding: 0.5em 0;
-}
-
-#errorIcon {
-  background-image: url(../components/paper-input/error-100.png);
-  background-size: 24px 24px;
-  height: 24px;
-  width: 24px;
-}
-
-
-@media (min-resolution: 2dppx) {
-  #errorIcon {
-    background-image: url(../components/paper-input/error-200.png);
-    background-size: 24px 24px;
-  }
-}
-
-#underlineContainer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1;
-}
-
-:host([multiline]) #underlineContainer {
-  bottom: auto;
-}
-
-:host([multiline]) #underlineContainer.animating {
-  transition: top 0.2s ease-in;
-}
-
-#underline {
-  height: 1px;
-  background: #757575;
-  border-bottom-color: #757575;
-}
-
-:host([disabled]) #underline {
-  border-bottom: 1px dashed;
-  height: 0px;
-  background: transparent;
-}
-
-#underlineHighlight {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  -webkit-transform: scale(0,2);
-  transform: scale(0,2);
-}
-#underlineHighlight.pressed {
-  -webkit-transform: scale(0.1,2);
-  transform: scale(0.1,2);
-  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
-  transition: -webkit-transform 0.1s cubic-bezier(0.2, 0, 0.03, 1);
-}
-#underlineHighlight.animating {
-  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
-  transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
-}
-#underlineHighlight.focused {
-  -webkit-transform: scale(1);
-  transform: scale(1);
-}
-
-#caret {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  -webkit-transform-origin-x: 0%;
-  transform-origin-x: 0%;
-  -webkit-transform: scaleX(1) translateX(10%);
-  transform: scaleX(1) translateX(10%);
-}
-#caret.animating {
-  display: block;
-   /* TODO: transforms are unprefixed in M36/ Remove when stable. */
-  transition: -webkit-transform 0.2s ease-out, opacity 0.2s ease-out;
-}
-#caret.focused {
-  display: block;
-  opacity: 0.75;
-  -webkit-transform: scaleX(0) translateX(0);
-  transform: scaleX(0) translateX(0);
-}
-#caretInner {
-  position: absolute;
-  top: 0.6em;
-  left: 0;
-  height: 1.2em;
-  width: 25%;
-}
-</style>
-
-    <div id="floatedLabel" class="hidden"><span id="floatedLabelSpan">{{label}}</span></div>
-
-    <div id="container" on-transitionend="{{transitionEndAction}}" on-webkittransitionend="{{transitionEndAction}}">
-
-      <div id="label"><span id="labelSpan">{{label}}</span></div>
-
-      <div id="inputContainer">
-
-        <div id="inputClone">
-          <span id="inputCloneSpan" aria-hidden="true">&nbsp;</span>
-        </div>
-
-        <template if="{{multiline}}">
-          <div id="minInputHeight"></div>
-          <div id="maxInputHeight"></div>
-        </template>
-
-        <shadow></shadow>
-
-      </div>
-
-      <div id="underlineContainer">
-        <div id="underline"></div>
-        <div id="underlineHighlight" class="focusedColor"></div>
-      </div>
-
-      <div id="caret">
-        <div id="caretInner" class="focusedColor"></div>
-      </div>
-
-    </div>
-
-    <div id="errorContainer">
-      <div id="error" role="alert" aria-hidden="{{!invalid}}">{{error}}</div>
-      <div id="errorIcon"></div>
-    </div>
-
-  </template>
-
-  
-
-</polymer-element>
-</div>
-  <div hidden><!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
-The complete set of authors may be found at http://polymer.github.io/AUTHORS
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
--->
-
-<!--
-/**
- * @group Paper Elements
- *
- * `paper-icon-button` is a button with an image placed at the center.
- *
- * Example:
- *
- *     <paper-icon-button src="star.png"></paper-icon-button>
- *
- * `paper-icon-button` includes a default icon set.  Use `icon` to specify 
- * which icon from the icon set to use.
- *
- * Example:
- *
- *     <paper-icon-button icon="menu"></paper-icon-button>
- *
- * See <a href="core-iconset.html">core-iconset</a> for more information about 
- * how to use a custom icon set.
- *
- * @element paper-icon-button
- * @extends paper-button
- * @homepage github.io
- */
--->
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-<!--
-
-The `core-icon` element displays an icon using CSS background image. By default an icon renders as 24px square.
-
-Example using src:
-
-    <core-icon src="star.png"></core-icon>
-
-Example setting size to 32px x 32px:
-
-    <core-icon src="big_star.png" size="32"></core-icon>
-
-Example using icon from default iconset:
-
-    <core-icon icon="menu"></core-icon>
-
-Example using icon `cherry` from custom iconset `fruit`:
-
-    <core-icon icon="fruit:cherry"></core-icon>
-
-See [core-iconset](#core-iconset) and [core-iconset-svg](#core-iconset-svg) for more information about
-how to use a custom iconset.
-
-See [core-icons](#core-icons) for the default set of icons. To use the default set of icons you'll need to include an import for `core-icons.html`.
-
-@group Polymer Core Elements
-@element core-icon
-@homepage polymer.github.io
--->
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-/**
- * @group Polymer Core Elements
- *
- * The `core-iconset` element allows users to define their own icon sets. 
- * The `src` property specifies the url of the icon image. Multiple icons may
- * be included in this image and they may be organized into rows.
- * The `icons` property is a space separated list of names corresponding to the
- * icons. The names must be ordered as the icons are ordered in the icon image.
- * Icons are expected to be square and are the size specified by the `iconSize`
- * property. The `width` property corresponds to the width of the icon image 
- * and must be specified if icons are arranged into multiple rows in the image.
- *
- * All `core-iconset` elements are available for use by other `core-iconset`
- * elements via a database keyed by id. Typically, an element author that wants
- * to support a set of custom icons uses a `core-iconset` to retrieve 
- * and use another, user-defined iconset.
- *
- * Example:
- *
- *     <core-iconset id="my-icons" src="my-icons.png" width="96" iconSize="24"
- *         icons="location place starta stopb bus car train walk">
- *     </core-iconset>
- *
- * This will automatically register the icon set "my-icons" to the iconset
- * database.  To use these icons from within another element, make a 
- * `core-iconset` element and call the `byId` method to retrieve a
- * given iconset. To apply a particular icon to an element, use the 
- * `applyIcon` method. For example:
- *
- *     iconset.applyIcon(iconNode, 'car');
- *
- * Themed icon sets are also supported. The `core-iconset` can contain child
- * `property` elements that specify a theme with an offsetX and offsetY of the
- * theme within the icon resource. For example.
- *
- *     <core-iconset id="my-icons" src="my-icons.png" width="96" iconSize="24"
- *         icons="location place starta stopb bus car train walk">
- *       <property theme="special" offsetX="256" offsetY="24"></property>
- *     </core-iconset>
- *
- * Then a themed icon can be applied like this:
- *
- *     iconset.applyIcon(iconNode, 'car', 'special');
- *
- * @element core-iconset
- * @extends core-meta
- * @homepage github.io
- */
--->
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-`core-meta` provides a method of constructing a self-organizing database.
-It is useful to collate element meta-data for things like catalogs and for 
-designer.
-
-Example, an element folder has a `metadata.html` file in it, that contains a 
-`core-meta`, something like this:
-
-    <core-meta id="my-element" label="My Element">
-      <property name="color" value="blue"></property>
-    </core-meta>
-
-An application can import as many of these files as it wants, and then use 
-`core-meta` again to access the collected data.
-
-    <script>
-      var meta = document.createElement('core-meta');
-      console.log(meta.list); // dump a list of all meta-data elements that have been created
-    </script>
-
-Use `byId(id)` to retrive a specific core-meta.
-
-    <script>
-      var meta = document.createElement('core-meta');
-      console.log(meta.byId('my-element'));
-    </script>
-
-By default all meta-data are stored in a single databse.  If your meta-data 
-have different types and want them to be stored separately, use `type` to 
-differentiate them.
-
-Example:
-
-    <core-meta id="x-foo" type="xElt"></core-meta>
-    <core-meta id="x-bar" type="xElt"></core-meta>
-    <core-meta id="y-bar" type="yElt"></core-meta>
-
-    <script>
-      var meta = document.createElement('core-meta');
-      meta.type = 'xElt';
-      console.log(meta.list);
-    </script>
-
-@group Polymer Core Elements
-@element core-meta
-@homepage github.io
--->
-
-
-
-<polymer-element name="core-meta" attributes="list label type" hidden assetpath="../components/core-meta/">
-
-</polymer-element>
-
-
-<polymer-element name="core-iconset" extends="core-meta" attributes="src width icons iconSize" assetpath="../components/core-iconset/">
-  
-  
-
-</polymer-element>
-
-
-<style shim-shadowdom="">/* Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt */
-
-html /deep/ core-icon {
-  display: inline-block;
-  vertical-align: middle;
-  background-repeat: no-repeat;
-}
-
-html /deep/ core-icon[size=""] {
-  position: relative;
-}
-
-html /deep/ core-icon[size=""] > svg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-</style>
-
-<polymer-element name="core-icon" attributes="src size icon" assetpath="../components/core-icon/">
-
-
-</polymer-element>
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-@group Paper Elements
-
-`paper-button` is a button containing text or an image. When the user touches
-the button, a ripple effect emanates from the point of contact.
-
-A `paper-button` may be flat or raised. A raised button behaves like a piece
-of paper resting on another sheet, and lifts up upon press. Flat buttons do
-not raise up. Add the `raisedButton` attribute to make a raised button.
-
-Example:
-
-    <paper-button label="flat button"></paper-button>
-    <paper-button label="raised button" raisedButton></paper-button>
-
-A button should be styled with a background color, text color, ripple color
-and hover color.
-
-To style the background, text and hover color, apply the `background` and
-`color` CSS properties to the button. To style the ripple color, apply the
-`color` CSS property to the `#ripple` element in the button's shadow root:
-
-    /* Style #my-button blue with white text and darker blue ink. */
-    #my-button {
-        background: #4285f4;
-        color: #fff;
-    }
-
-    #my-button:hover {
-        background: #2a56c6;
-    }
-
-    #my-button::shadow #ripple {
-        color: #2a56c6;
-    }
-
-@element paper-button
-@extends paper-focusable
--->
-
-
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-/**
- * @module Quantum Paper Elements
- */
-/**
- * paper-focusable is a base class for Quantum Paper elements that can be
- * focused.
- *
- * @class paper-focusable
- */
--->
-
-
-
-<polymer-element name="paper-focusable" attributes="active focused disabled isToggle" tabindex="0" on-down="{{_downAction}}" on-up="{{_upAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}" assetpath="../components/paper-focusable/">
-
-  
-</polymer-element>
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-`paper-ripple` provides a visual effect that other quantum paper elements can
-use to simulate a rippling effect emanating from the point of contact.  The
-effect can be visualized as a concentric circle with motion.
-
-Example:
-
-    <paper-ripple></paper-ripple>
-
-`paper-ripple` listens to "down" and "up" events so it would display ripple
-effect when touches on it.  You can also defeat the default behavior and 
-manually route the down and up actions to the ripple element.  Note that it is
-important if you call downAction() you will have to make sure to call upAction()
-so that `paper-ripple` would end the animation loop.
-
-Example:
-
-    <paper-ripple id="ripple" style="pointer-events: none;"></paper-ripple>
-    ...
-    downAction: function(e) {
-      this.$.ripple.downActon({x: e.x, y: e.y});
-    },
-    upAction: function(e) {
-      this.$.ripple.upAction();
-    }
-
-Styling ripple effect:
-
-  Use CSS color property to style the ripple:
-
-    paper-ripple {
-      color: #4285f4;
-    }
-
-  Note that CSS color property is inherited so it is not required to set it on
-  the `paper-ripple` element directly.
-
-Apply `recenteringTouch` class to make the recentering rippling effect.
-
-    <paper-ripple class="recenteringTouch"></paper-ripple>
-
-Apply `circle` class to make the rippling effect within a circle.
-
-    <paper-ripple class="circle"></paper-ripple>
-
-@group Paper Elements
-@element paper-ripple
-@homepage github.io
--->
-
-
-
-<polymer-element name="paper-ripple" attributes="initialOpacity opacityDecayVelocity" assetpath="../components/paper-ripple/">
-<template>
-
-  <style>
-
-    :host {
-      display: block;
-      position: relative;
-    }
-
-    #canvas {
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    :host(.circle) #canvas {
-      border-radius: 50%;
-    }
-
-  </style>
-
-</template>
-
-</polymer-element>
-
-<!--
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<!--
-The `paper-shadow` element is a helper to add shadows to elements.
-Quantum paper shadows are composed of two shadows on top of each other. We
-mimic this effect by using two elements on top of each other, each with a
-different drop shadow. You can apply the shadow to an element by assigning
-it as the target. If you do not specify a target, the shadow is applied to
-the `paper-shadow` element's parent element or shadow host element if its
-parent is a shadow root. Alternatively, you can use the CSS classes included
-by this element directly.
-
-Example:
-
-    <div id="myCard" class="card"></div>
-    <paper-shadow id="myShadow" z="1"></div>
-
-    // Assign a target explicitly
-    myShadow.target = document.getElementById('myCard');
-
-    // Auto-assign the target.
-    <div class="card">
-      <paper-shadow z="1"></paper-shadow>
-    </div>
-
-    // Use the classes directly
-    <div class="card paper-shadow-top paper-shadow-top-z-1">
-      <div class="card-inner paper-shadow-bottom paper-shadow-bottom-z-1"></div>
-    </div>
-
-If you assign a target to a `paper-shadow` element, it creates two nodes and inserts
-them as the first children of the target, or the first children of the target's shadow
-root if there is one. This implies:
-
-  1. If the primary node that drops the shadow has styling that affects its shape,
-     the same styling must be applied to elements with class `paper-shadow`.
-     `border-radius` is a very common property and is inherited automatically.
-
-  2. The target's overflow property will be set to `overflow: visible` because the
-     shadow is rendered beyond the bounds of its container. Position the shadow as a
-     separate layer and use a different child element for clipping if needed.
-
-@group Paper Elements
-@class paper-shadow
--->
-
-
-
-<polymer-element name="paper-shadow" assetpath="../components/paper-shadow/">
-
-  <template>
-
-    <style no-shim="">.paper-shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  border-radius: inherit;
-}
-
-.paper-shadow-animated.paper-shadow {
-  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.paper-shadow-top-z-1 {
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
-}
-
-.paper-shadow-bottom-z-1 {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-}
-
-.paper-shadow-top-z-2 {
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.paper-shadow-bottom-z-2 {
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-}
-
-.paper-shadow-top-z-3 {
-  box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-}
-
-.paper-shadow-bottom-z-3 {
-  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
-}
-
-.paper-shadow-top-z-4 {
-  box-shadow: 0 25px 55px 0 rgba(0, 0, 0, 0.21);
-}
-
-.paper-shadow-bottom-z-4 {
-  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22);
-}
-
-.paper-shadow-top-z-5 {
-  box-shadow: 0 40px 77px 0 rgba(0, 0, 0, 0.22);
-}
-
-.paper-shadow-bottom-z-5 {
-  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2);
-}
-
-.paper-shadow-animate-z-1-z-2.paper-shadow-top {
-  -webkit-transition: none;
-  -webkit-animation: animate-shadow-top-z-1-z-2 0.7s infinite alternate;
-}
-
-.paper-shadow-animate-z-1-z-2 .paper-shadow-bottom {
-  -webkit-transition: none;
-  -webkit-animation: animate-shadow-bottom-z-1-z-2 0.7s infinite alternate;
-}
-
-@-webkit-keyframes animate-shadow-top-z-1-z-2 {
-  0% {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
-  }
-  100% {
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-}
-
-@-webkit-keyframes animate-shadow-bottom-z-1-z-2 {
-  0% {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  }
-  100% {
-    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-  }
-}</style>
-
-  </template>
-
-  
-</polymer-element>
-
-
-<polymer-element name="paper-button" extends="paper-focusable" attributes="label raisedButton iconSrc icon" role="button" assetpath="../components/paper-button/">
-
-  <template>
-
-    <style>:host {
-  display: inline-block;
-  position: relative;
-  border: 0;
-  background: transparent;
-  text-align: center;
-  font: inherit;
-  text-transform: uppercase;
-  outline: none;
-  border-radius: 3px;
-  -webkit-user-select: none;
-  user-select: none;
-  cursor: pointer;
-}
-
-:host(.hover:hover) {
-  background: #e4e4e4;
-}
-
-:host([raisedButton]) {
-  background: #dfdfdf;
-}
-
-:host([raisedButton].hover:hover) {
-  background: #d6d6d6;
-}
-
-:host([disabled]) {
-  background: #eaeaea !important;
-  color: #a8a8a8 !important;
-  cursor: auto;
-}
-
-#shadow-container {
-  border-radius: inherit;
-}
-
-#clip {
-  position: relative;
-  border-radius: inherit;
-  overflow: hidden;
-}
-
-#focusBg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0;
-  border-radius: inherit;
-  background: #c3c3c3;
-  -webkit-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:host([focused]) #focusBg {
-  -webkit-transition: none;
-  transition: none;
-  -webkit-animation: focus-fade 0.7s infinite alternate;
-  animation: focus-fade 0.7s infinite alternate;
-}
-
-@-webkit-keyframes focus-fade {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes focus-fade {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-#ripple {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  color: #d1d1d1;
-  pointer-events: none;
-}
-
-:host([raisedButton]) #ripple {
-  color: #cecece;
-}
-
-#ripple::shadow canvas {
-  top: 0;
-  left: 0;
-}
-
-#content {
-  /* needed to position the ink behind the content */
-  position: relative;
-}
-
-#icon {
-  margin: 8px;
-}
-
-#content > span {
-  display: inline-block;
-  margin: 0.5em;
-}</style>
-
-    <template if="{{raisedButton}}">
-      <div fit="" id="shadow-container">
-        <paper-shadow id="shadow" z="{{z}}" animated=""></paper-shadow>
-      </div>
-    </template>
-
-    <div id="clip">
-      <div id="focusBg"></div>
-      <paper-ripple id="ripple"></paper-ripple>
-      <div id="content">
-        <template if="{{iconSrc || icon}}">
-          <core-icon id="icon" src="{{iconSrc}}" icon="{{icon}}"></core-icon>
-        </template>
-        <template if="{{label}}">
-          <span>{{label}}</span>
-        </template>
-      </div>
-    </div>
-
-  </template>
-
-  
-</polymer-element>
-
-
-<polymer-element name="paper-icon-button" extends="paper-button" attributes="fill" assetpath="../components/paper-icon-button/">
-
-  <template>
-
-    <style>/*
-Copyright 2013 The Polymer Authors. All rights reserved.
-Use of this source code is governed by a BSD-style
-license that can be found in the LICENSE file.
-*/
-
-:host([disabled]) {
-  background: none !important;
-}
-
-:host([disabled]) /deep/ #icon {
-  fill: #c9c9c9;
-}
-
-:host(:not([fill])) /deep/ #focusBg {
-  border-radius: 50%;
-}</style>
-
-    <shadow></shadow>
-
-  </template>
-
-  
-  
-</polymer-element>
-</div>
   <div hidden><!--
 Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -1885,6 +750,95 @@ To change the radio unchecked color:
 @homepage github.io
 -->
 
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-ripple` provides a visual effect that other quantum paper elements can
+use to simulate a rippling effect emanating from the point of contact.  The
+effect can be visualized as a concentric circle with motion.
+
+Example:
+
+    <paper-ripple></paper-ripple>
+
+`paper-ripple` listens to "down" and "up" events so it would display ripple
+effect when touches on it.  You can also defeat the default behavior and 
+manually route the down and up actions to the ripple element.  Note that it is
+important if you call downAction() you will have to make sure to call upAction()
+so that `paper-ripple` would end the animation loop.
+
+Example:
+
+    <paper-ripple id="ripple" style="pointer-events: none;"></paper-ripple>
+    ...
+    downAction: function(e) {
+      this.$.ripple.downActon({x: e.x, y: e.y});
+    },
+    upAction: function(e) {
+      this.$.ripple.upAction();
+    }
+
+Styling ripple effect:
+
+  Use CSS color property to style the ripple:
+
+    paper-ripple {
+      color: #4285f4;
+    }
+
+  Note that CSS color property is inherited so it is not required to set it on
+  the `paper-ripple` element directly.
+
+Apply `recenteringTouch` class to make the recentering rippling effect.
+
+    <paper-ripple class="recenteringTouch"></paper-ripple>
+
+Apply `circle` class to make the rippling effect within a circle.
+
+    <paper-ripple class="circle"></paper-ripple>
+
+@group Paper Elements
+@element paper-ripple
+@homepage github.io
+-->
+
+
+
+<polymer-element name="paper-ripple" attributes="initialOpacity opacityDecayVelocity" assetpath="../components/paper-ripple/">
+<template>
+
+  <style>
+
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    #canvas {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    :host(.circle) #canvas {
+      border-radius: 50%;
+    }
+
+  </style>
+
+</template>
+
+</polymer-element>
 
 
 <polymer-element name="paper-radio-button" role="radio" tabindex="0" aria-checked="false" assetpath="../components/paper-radio-button/">
@@ -2334,6 +1288,135 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  */
 -->
 
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+/**
+ * @group Polymer Core Elements
+ *
+ * The `core-iconset` element allows users to define their own icon sets. 
+ * The `src` property specifies the url of the icon image. Multiple icons may
+ * be included in this image and they may be organized into rows.
+ * The `icons` property is a space separated list of names corresponding to the
+ * icons. The names must be ordered as the icons are ordered in the icon image.
+ * Icons are expected to be square and are the size specified by the `iconSize`
+ * property. The `width` property corresponds to the width of the icon image 
+ * and must be specified if icons are arranged into multiple rows in the image.
+ *
+ * All `core-iconset` elements are available for use by other `core-iconset`
+ * elements via a database keyed by id. Typically, an element author that wants
+ * to support a set of custom icons uses a `core-iconset` to retrieve 
+ * and use another, user-defined iconset.
+ *
+ * Example:
+ *
+ *     <core-iconset id="my-icons" src="my-icons.png" width="96" iconSize="24"
+ *         icons="location place starta stopb bus car train walk">
+ *     </core-iconset>
+ *
+ * This will automatically register the icon set "my-icons" to the iconset
+ * database.  To use these icons from within another element, make a 
+ * `core-iconset` element and call the `byId` method to retrieve a
+ * given iconset. To apply a particular icon to an element, use the 
+ * `applyIcon` method. For example:
+ *
+ *     iconset.applyIcon(iconNode, 'car');
+ *
+ * Themed icon sets are also supported. The `core-iconset` can contain child
+ * `property` elements that specify a theme with an offsetX and offsetY of the
+ * theme within the icon resource. For example.
+ *
+ *     <core-iconset id="my-icons" src="my-icons.png" width="96" iconSize="24"
+ *         icons="location place starta stopb bus car train walk">
+ *       <property theme="special" offsetX="256" offsetY="24"></property>
+ *     </core-iconset>
+ *
+ * Then a themed icon can be applied like this:
+ *
+ *     iconset.applyIcon(iconNode, 'car', 'special');
+ *
+ * @element core-iconset
+ * @extends core-meta
+ * @homepage github.io
+ */
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`core-meta` provides a method of constructing a self-organizing database.
+It is useful to collate element meta-data for things like catalogs and for 
+designer.
+
+Example, an element folder has a `metadata.html` file in it, that contains a 
+`core-meta`, something like this:
+
+    <core-meta id="my-element" label="My Element">
+      <property name="color" value="blue"></property>
+    </core-meta>
+
+An application can import as many of these files as it wants, and then use 
+`core-meta` again to access the collected data.
+
+    <script>
+      var meta = document.createElement('core-meta');
+      console.log(meta.list); // dump a list of all meta-data elements that have been created
+    </script>
+
+Use `byId(id)` to retrive a specific core-meta.
+
+    <script>
+      var meta = document.createElement('core-meta');
+      console.log(meta.byId('my-element'));
+    </script>
+
+By default all meta-data are stored in a single databse.  If your meta-data 
+have different types and want them to be stored separately, use `type` to 
+differentiate them.
+
+Example:
+
+    <core-meta id="x-foo" type="xElt"></core-meta>
+    <core-meta id="x-bar" type="xElt"></core-meta>
+    <core-meta id="y-bar" type="yElt"></core-meta>
+
+    <script>
+      var meta = document.createElement('core-meta');
+      meta.type = 'xElt';
+      console.log(meta.list);
+    </script>
+
+@group Polymer Core Elements
+@element core-meta
+@homepage github.io
+-->
+
+
+
+<polymer-element name="core-meta" attributes="list label type" hidden assetpath="../components/core-meta/">
+
+</polymer-element>
+
+
+<polymer-element name="core-iconset" extends="core-meta" attributes="src width icons iconSize" assetpath="../components/core-iconset/">
+  
+  
+
+</polymer-element>
 
 
 <polymer-element name="core-iconset-svg" extends="core-meta" attributes="iconSize" assetpath="../components/core-iconset-svg/">
@@ -2529,8 +1612,956 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   TODO(sorvell): we'd rather do this in core-iconset but we can't until
   crbug.com/373461 is addressed
 -->
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+
+The `core-icon` element displays an icon using CSS background image. By default an icon renders as 24px square.
+
+Example using src:
+
+    <core-icon src="star.png"></core-icon>
+
+Example setting size to 32px x 32px:
+
+    <core-icon src="big_star.png" size="32"></core-icon>
+
+Example using icon from default iconset:
+
+    <core-icon icon="menu"></core-icon>
+
+Example using icon `cherry` from custom iconset `fruit`:
+
+    <core-icon icon="fruit:cherry"></core-icon>
+
+See [core-iconset](#core-iconset) and [core-iconset-svg](#core-iconset-svg) for more information about
+how to use a custom iconset.
+
+See [core-icons](#core-icons) for the default set of icons. To use the default set of icons you'll need to include an import for `core-icons.html`.
+
+@group Polymer Core Elements
+@element core-icon
+@homepage polymer.github.io
+-->
+
+
+<style shim-shadowdom="">/* Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt */
+
+html /deep/ core-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+}
+
+html /deep/ core-icon[size=""] {
+  position: relative;
+}
+
+html /deep/ core-icon[size=""] > svg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</style>
+
+<polymer-element name="core-icon" attributes="src size icon" assetpath="../components/core-icon/">
+
+
+</polymer-element>
 
 </div>
+  
+  <div hidden>
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+
+<!--
+`paper-input` is a single- or multi-line text field where user can enter input.
+It can optionally have a label.
+
+Example:
+
+    <paper-input label="Your Name"></paper-input>
+    <paper-input multiline label="Enter multiple lines here"></paper-input>
+
+@group Paper Elements
+@element paper-input
+@extends core-input
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+
+<!--
+/**
+ * core-input is an unstyled single- or multi-line text field where user can
+ * enter input.
+ *
+ * Example:
+ *
+ *     <core-input placeholder="Placeholder text here"></core-input>
+ *
+ *     <core-input multiline placeholder="Enter multiple lines here"></core-input>
+ *
+ * The text input's value is considered "committed" if the user hits the `enter`
+ * key or blurs the input after changing the value. The "change" event is fired
+ * when the value becomes committed, and the committed value is stored in the
+ * "value" property. The current value of the input is stored in the "inputValue"
+ * property.
+ *
+ * core-input also can optionally validate the value by providing it with a
+ * regular expression to match against, or a validation function. The
+ * "input-invalid" event is fired if the input value changes and is invalid.
+ * The "invalid" property is also available for observation.
+ *
+ * Example:
+ *
+ *     // valid only if the value is a number
+ *     <core-input validate="^[0-9]*$" on-input-invalid="{{inputInvalidAction}}"></core-input>
+ *
+ *     this.$.input.validate = /^[0-9]*$/;  // valid only if the value is a number
+ *
+ *     this.$.input2.validate = function(value) {
+ *       return value === 'foo';  // valid only if the value is 'foo'
+ *     }
+ *
+ * @group Polymer Core Elements
+ * @element core-input
+ * @homepage github.io
+ */
+
+/**
+ * Fired when the inputValue of is changed. This is the same event as the DOM
+ * "input" event.
+ *
+ * @event input
+ */
+
+/**
+ * Fired when the user commits the value of the input, either by the hitting the
+ * `enter` key or blurring the input after the changing the inputValue. Also see the
+ * DOM "change" event.
+ *
+ * @event change
+ */
+
+/**
+ * Fired when the inputValue of this text input changes and fails validation.
+ *
+ * @event input-invalid
+ * @param {Object} detail
+ * @param {string} value The text input's inputValue.
+ */
+-->
+
+
+<polymer-element name="core-input" attributes="value inputValue placeholder disabled multiline rows validate invalid" assetpath="../components/core-input/">
+
+  <template>
+
+    <style>:host {
+  display: inline-block;
+  text-align: inherit;
+  color: #ccc;
+  position: relative;
+  width: 20em;
+}
+
+:host:hover {
+  cursor: text;
+}
+
+input,
+textarea {
+  font: inherit;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+}
+
+textarea[fit] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}</style>
+
+    <template if="{{multiline}}">
+      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === &apos;fit&apos;}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
+    </template>
+
+    <template if="{{!multiline}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
+    </template>
+
+  </template>
+
+  
+
+</polymer-element>
+
+
+<polymer-element name="paper-input" extends="core-input" attributes="label floatingLabel maxRows error" on-down="{{downAction}}" on-up="{{upAction}}" assetpath="../components/paper-input/">
+
+  <template>
+
+    <style>:host {
+  display: inline-block;
+  outline: none;
+  text-align: inherit;
+  color: #757575;
+}
+:host(:hover) {
+  cursor: text;
+}
+
+#container {
+  position: relative;
+}
+
+#inputClone,
+#minInputHeight,
+#maxInputHeight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  padding: 0.5em 0;
+}
+
+:host /deep/ input,
+:host /deep/ textarea {
+  font: inherit;
+  color: #000;
+  padding: 0;
+  /* Important to use margin here so the margin remains visible
+   * when textarea scrolls internally. */
+  margin: 0.5em 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.host /deep/ textarea {
+  resize: none;
+}
+
+.focusedColor {
+  color: #4059a9;
+  background: #4059a9;
+}
+
+:host(.invalid) #underline,
+:host(.invalid) #underlineHighlight,
+:host(.invalid) .focusedColor {
+  color: #d34336;
+  background: #d34336;
+}
+:host(.invalid) #floatedLabel {
+  color: #d34336;
+}
+
+#floatedLabel {
+  font-size: 0.75em;
+  background: transparent;
+  white-space: nowrap;
+}
+#floatedLabel.hidden {
+  visibility: hidden;
+}
+#floatedLabel.focused {
+  visibility: visible;
+}
+
+#label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 0.5em 0;
+  background: transparent;
+  -webkit-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+}
+#label.hidden {
+  display: none;
+}
+#label.animating {
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+
+#labelSpan {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
+}
+
+#errorContainer {
+  visibility: hidden;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+:host(.invalid) #errorContainer {
+  visibility: visible;
+}
+
+#error {
+  -webkit-flex: 1;
+  flex: 1;
+  color: #d34336;
+  font-size: 0.75em;
+  padding: 0.5em 0;
+}
+
+#errorIcon {
+  background-image: url(../components/paper-input/error-100.png);
+  background-size: 24px 24px;
+  height: 24px;
+  width: 24px;
+}
+
+
+@media (min-resolution: 2dppx) {
+  #errorIcon {
+    background-image: url(../components/paper-input/error-200.png);
+    background-size: 24px 24px;
+  }
+}
+
+#underlineContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1;
+}
+
+:host([multiline]) #underlineContainer {
+  bottom: auto;
+}
+
+:host([multiline]) #underlineContainer.animating {
+  transition: top 0.2s ease-in;
+}
+
+#underline {
+  height: 1px;
+  background: #757575;
+  border-bottom-color: #757575;
+}
+
+:host([disabled]) #underline {
+  border-bottom: 1px dashed;
+  height: 0px;
+  background: transparent;
+}
+
+#underlineHighlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  -webkit-transform: scale(0,2);
+  transform: scale(0,2);
+}
+#underlineHighlight.pressed {
+  -webkit-transform: scale(0.1,2);
+  transform: scale(0.1,2);
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  transition: -webkit-transform 0.1s cubic-bezier(0.2, 0, 0.03, 1);
+}
+#underlineHighlight.animating {
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+#underlineHighlight.focused {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+#caret {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  -webkit-transform-origin-x: 0%;
+  transform-origin-x: 0%;
+  -webkit-transform: scaleX(1) translateX(10%);
+  transform: scaleX(1) translateX(10%);
+}
+#caret.animating {
+  display: block;
+   /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  transition: -webkit-transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+#caret.focused {
+  display: block;
+  opacity: 0.75;
+  -webkit-transform: scaleX(0) translateX(0);
+  transform: scaleX(0) translateX(0);
+}
+#caretInner {
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  height: 1.2em;
+  width: 25%;
+}
+</style>
+
+    <div id="floatedLabel" class="hidden"><span id="floatedLabelSpan">{{label}}</span></div>
+
+    <div id="container" on-transitionend="{{transitionEndAction}}" on-webkittransitionend="{{transitionEndAction}}">
+
+      <div id="label"><span id="labelSpan">{{label}}</span></div>
+
+      <div id="inputContainer">
+
+        <div id="inputClone">
+          <span id="inputCloneSpan" aria-hidden="true">&nbsp;</span>
+        </div>
+
+        <template if="{{multiline}}">
+          <div id="minInputHeight"></div>
+          <div id="maxInputHeight"></div>
+        </template>
+
+        <shadow></shadow>
+
+      </div>
+
+      <div id="underlineContainer">
+        <div id="underline"></div>
+        <div id="underlineHighlight" class="focusedColor"></div>
+      </div>
+
+      <div id="caret">
+        <div id="caretInner" class="focusedColor"></div>
+      </div>
+
+    </div>
+
+    <div id="errorContainer">
+      <div id="error" role="alert" aria-hidden="{{!invalid}}">{{error}}</div>
+      <div id="errorIcon"></div>
+    </div>
+
+  </template>
+
+  
+
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+
+<!--
+/**
+ * @group Paper Elements
+ *
+ * `paper-icon-button` is a button with an image placed at the center.
+ *
+ * Example:
+ *
+ *     <paper-icon-button src="star.png"></paper-icon-button>
+ *
+ * `paper-icon-button` includes a default icon set.  Use `icon` to specify 
+ * which icon from the icon set to use.
+ *
+ * Example:
+ *
+ *     <paper-icon-button icon="menu"></paper-icon-button>
+ *
+ * See <a href="core-iconset.html">core-iconset</a> for more information about 
+ * how to use a custom icon set.
+ *
+ * @element paper-icon-button
+ * @extends paper-button
+ * @homepage github.io
+ */
+-->
+
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+@group Paper Elements
+
+`paper-button` is a button containing text or an image. When the user touches
+the button, a ripple effect emanates from the point of contact.
+
+A `paper-button` may be flat or raised. A raised button behaves like a piece
+of paper resting on another sheet, and lifts up upon press. Flat buttons do
+not raise up. Add the `raisedButton` attribute to make a raised button.
+
+Example:
+
+    <paper-button label="flat button"></paper-button>
+    <paper-button label="raised button" raisedButton></paper-button>
+
+A button should be styled with a background color, text color, ripple color
+and hover color.
+
+To style the background, text and hover color, apply the `background` and
+`color` CSS properties to the button. To style the ripple color, apply the
+`color` CSS property to the `#ripple` element in the button's shadow root:
+
+    /* Style #my-button blue with white text and darker blue ink. */
+    #my-button {
+        background: #4285f4;
+        color: #fff;
+    }
+
+    #my-button:hover {
+        background: #2a56c6;
+    }
+
+    #my-button::shadow #ripple {
+        color: #2a56c6;
+    }
+
+@element paper-button
+@extends paper-focusable
+-->
+
+
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+/**
+ * @module Quantum Paper Elements
+ */
+/**
+ * paper-focusable is a base class for Quantum Paper elements that can be
+ * focused.
+ *
+ * @class paper-focusable
+ */
+-->
+
+
+
+<polymer-element name="paper-focusable" attributes="active focused disabled isToggle" tabindex="0" on-down="{{_downAction}}" on-up="{{_upAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}" assetpath="../components/paper-focusable/">
+
+  
+</polymer-element>
+
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+The `paper-shadow` element is a helper to add shadows to elements.
+Quantum paper shadows are composed of two shadows on top of each other. We
+mimic this effect by using two elements on top of each other, each with a
+different drop shadow. You can apply the shadow to an element by assigning
+it as the target. If you do not specify a target, the shadow is applied to
+the `paper-shadow` element's parent element or shadow host element if its
+parent is a shadow root. Alternatively, you can use the CSS classes included
+by this element directly.
+
+Example:
+
+    <div id="myCard" class="card"></div>
+    <paper-shadow id="myShadow" z="1"></div>
+
+    // Assign a target explicitly
+    myShadow.target = document.getElementById('myCard');
+
+    // Auto-assign the target.
+    <div class="card">
+      <paper-shadow z="1"></paper-shadow>
+    </div>
+
+    // Use the classes directly
+    <div class="card paper-shadow-top paper-shadow-top-z-1">
+      <div class="card-inner paper-shadow-bottom paper-shadow-bottom-z-1"></div>
+    </div>
+
+If you assign a target to a `paper-shadow` element, it creates two nodes and inserts
+them as the first children of the target, or the first children of the target's shadow
+root if there is one. This implies:
+
+  1. If the primary node that drops the shadow has styling that affects its shape,
+     the same styling must be applied to elements with class `paper-shadow`.
+     `border-radius` is a very common property and is inherited automatically.
+
+  2. The target's overflow property will be set to `overflow: visible` because the
+     shadow is rendered beyond the bounds of its container. Position the shadow as a
+     separate layer and use a different child element for clipping if needed.
+
+@group Paper Elements
+@class paper-shadow
+-->
+
+
+
+<polymer-element name="paper-shadow" assetpath="../components/paper-shadow/">
+
+  <template>
+
+    <style no-shim="">.paper-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: inherit;
+}
+
+.paper-shadow-animated.paper-shadow {
+  transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paper-shadow-top-z-1 {
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+}
+
+.paper-shadow-bottom-z-1 {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.paper-shadow-top-z-2 {
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.paper-shadow-bottom-z-2 {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+
+.paper-shadow-top-z-3 {
+  box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.paper-shadow-bottom-z-3 {
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+}
+
+.paper-shadow-top-z-4 {
+  box-shadow: 0 25px 55px 0 rgba(0, 0, 0, 0.21);
+}
+
+.paper-shadow-bottom-z-4 {
+  box-shadow: 0 16px 28px 0 rgba(0, 0, 0, 0.22);
+}
+
+.paper-shadow-top-z-5 {
+  box-shadow: 0 40px 77px 0 rgba(0, 0, 0, 0.22);
+}
+
+.paper-shadow-bottom-z-5 {
+  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2);
+}
+
+.paper-shadow-animate-z-1-z-2.paper-shadow-top {
+  -webkit-transition: none;
+  -webkit-animation: animate-shadow-top-z-1-z-2 0.7s infinite alternate;
+}
+
+.paper-shadow-animate-z-1-z-2 .paper-shadow-bottom {
+  -webkit-transition: none;
+  -webkit-animation: animate-shadow-bottom-z-1-z-2 0.7s infinite alternate;
+}
+
+@-webkit-keyframes animate-shadow-top-z-1-z-2 {
+  0% {
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
+  }
+  100% {
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+}
+
+@-webkit-keyframes animate-shadow-bottom-z-1-z-2 {
+  0% {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  }
+  100% {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  }
+}</style>
+
+  </template>
+
+  
+</polymer-element>
+
+
+<polymer-element name="paper-button" extends="paper-focusable" attributes="label raisedButton iconSrc icon" role="button" assetpath="../components/paper-button/">
+
+  <template>
+
+    <style>:host {
+  display: inline-block;
+  position: relative;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  text-transform: uppercase;
+  outline: none;
+  border-radius: 3px;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+:host(.hover:hover) {
+  background: #e4e4e4;
+}
+
+:host([raisedButton]) {
+  background: #dfdfdf;
+}
+
+:host([raisedButton].hover:hover) {
+  background: #d6d6d6;
+}
+
+:host([disabled]) {
+  background: #eaeaea !important;
+  color: #a8a8a8 !important;
+  cursor: auto;
+}
+
+#shadow-container {
+  border-radius: inherit;
+}
+
+#clip {
+  position: relative;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+#focusBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  border-radius: inherit;
+  background: #c3c3c3;
+  -webkit-transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:host([focused]) #focusBg {
+  -webkit-transition: none;
+  transition: none;
+  -webkit-animation: focus-fade 0.7s infinite alternate;
+  animation: focus-fade 0.7s infinite alternate;
+}
+
+@-webkit-keyframes focus-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes focus-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  color: #d1d1d1;
+  pointer-events: none;
+}
+
+:host([raisedButton]) #ripple {
+  color: #cecece;
+}
+
+#ripple::shadow canvas {
+  top: 0;
+  left: 0;
+}
+
+#content {
+  /* needed to position the ink behind the content */
+  position: relative;
+}
+
+#icon {
+  margin: 8px;
+}
+
+#content > span {
+  display: inline-block;
+  margin: 0.5em;
+}</style>
+
+    <template if="{{raisedButton}}">
+      <div fit="" id="shadow-container">
+        <paper-shadow id="shadow" z="{{z}}" animated=""></paper-shadow>
+      </div>
+    </template>
+
+    <div id="clip">
+      <div id="focusBg"></div>
+      <paper-ripple id="ripple"></paper-ripple>
+      <div id="content">
+        <template if="{{iconSrc || icon}}">
+          <core-icon id="icon" src="{{iconSrc}}" icon="{{icon}}"></core-icon>
+        </template>
+        <template if="{{label}}">
+          <span>{{label}}</span>
+        </template>
+      </div>
+    </div>
+
+  </template>
+
+  
+</polymer-element>
+
+
+<polymer-element name="paper-icon-button" extends="paper-button" attributes="fill" assetpath="../components/paper-icon-button/">
+
+  <template>
+
+    <style>/*
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+*/
+
+:host([disabled]) {
+  background: none !important;
+}
+
+:host([disabled]) /deep/ #icon {
+  fill: #c9c9c9;
+}
+
+:host(:not([fill])) /deep/ #focusBg {
+  border-radius: 50%;
+}</style>
+
+    <shadow></shadow>
+
+  </template>
+
+  
+  
+</polymer-element>
+
+
+<polymer-element name="file-picker" attributes="label filePath" assetpath="../source/">
+  <template>
+    <style>
+    :host {
+      display: block;
+      position: relative;
+      padding: 40px 30px 30px 10px;
+      width: auto;
+      float: left;
+    }
+    :host paper-input::shadow, :host paper-input::shadow #input {
+      color: white;
+    }
+    :host paper-input::shadow #floatedLabelSpan {
+      color: #DDD;
+    }
+
+    </style>
+    
+      <paper-input id="sourceFolder" label="{{label}}" floatinglabel="true" value="{{filePath}}"></paper-input>
+  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
+    
+    
+    
+  </template>
+  
+</polymer-element></div>
   <style>
   html,body {
     height: 100%;
@@ -2563,13 +2594,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   
   /* CUSTOM STYLING */
   
-  #targetFolder{
-    margin-left: 5em;
-  }
-  #photoPicker paper-input {
-    margin-top:1em;
-    color: white;
-  }
+  
+  
   #chkPickImg {
     margin-left: 10em;
   }
@@ -2590,11 +2616,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<core-header-panel>
 		<core-toolbar horizontal="" layout="">
   		<div flex="">
-  		  <paper-input id="sourceFolder" label="Browse photos from" floatinglabel="true"></paper-input>
-  		  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
   		  
-  		  <paper-input id="targetFolder" label="Copy picked photos to" floatinglabel="true"></paper-input>
-  		  <paper-icon-button id="btnTargetFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
+  		  <file-picker id="sourceFolder" label="Browse photos from"></file-picker>
+  		  <file-picker id="targetFolder" label="Copy picked photos to"></file-picker>
+  		  
   		</div>
 		  <paper-checkbox id="chkPickImg" label="PICK THIS"></paper-checkbox>
 		</core-toolbar>

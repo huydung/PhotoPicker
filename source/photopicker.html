@@ -8,10 +8,11 @@
   <link rel="import" href="../components/font-roboto/roboto.html">
   <link rel="import" href="../components/core-header-panel/core-header-panel.html">
   <link rel="import" href="../components/core-toolbar/core-toolbar.html">
-  <link rel="import" href="../components/paper-input/paper-input.html">
-  <link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
+  
   <link rel="import" href="../components/paper-checkbox/paper-checkbox.html">
   <link rel="import" href="../components/core-icons/core-icons.html">
+  
+  <link rel="import" href="file-picker.html">
   <style>
   html,body {
     height: 100%;
@@ -44,13 +45,8 @@
   
   /* CUSTOM STYLING */
   
-  #targetFolder{
-    margin-left: 5em;
-  }
-  #photoPicker paper-input {
-    margin-top:1em;
-    color: white;
-  }
+  
+  
   #chkPickImg {
     margin-left: 10em;
   }
@@ -71,11 +67,10 @@
 	<core-header-panel>
 		<core-toolbar horizontal layout>
   		<div flex>
-  		  <paper-input id="sourceFolder" label="Browse photos from" floatingLabel="true"></paper-input>
-  		  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
   		  
-  		  <paper-input id="targetFolder" label="Copy picked photos to" floatingLabel="true"></paper-input>
-  		  <paper-icon-button id="btnTargetFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
+  		  <file-picker id="sourceFolder" label="Browse photos from"></file-picker>
+  		  <file-picker id="targetFolder" label="Copy picked photos to"></file-picker>
+  		  
   		</div>
 		  <paper-checkbox id="chkPickImg" label="PICK THIS"></paper-checkbox>
 		</core-toolbar>
