@@ -2537,7 +2537,7 @@ license that can be found in the LICENSE file.
 
 <polymer-element name="file-picker" attributes="label filePath" assetpath="../source/">
   <template>
-    <style>
+    <style shim-shadowdom="">
     :host {
       display: block;
       position: relative;
@@ -2555,14 +2555,12 @@ license that can be found in the LICENSE file.
     </style>
     
       <paper-input id="sourceFolder" label="{{label}}" floatinglabel="true" value="{{filePath}}"></paper-input>
-  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
-    
-    
+  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF" on-tap="{{btnBrowseTapped}}"></paper-icon-button>
     
   </template>
   
 </polymer-element></div>
-  <style>
+  <style shim-shadowdom="">
   html,body {
     height: 100%;
     margin: 0;

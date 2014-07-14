@@ -15,8 +15,7 @@
   },
   "permissions": [
     "fullscreen",
-    "fileSystem",
-    "fonts.googleapis.com"
+    {"fileSystem":["write", "directory"]}
     
   ]
 }

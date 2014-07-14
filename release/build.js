@@ -1857,9 +1857,22 @@
   ;
 
   Polymer('file-picker', {
+    
     created: function(){
-      console.log(this);
-    }
+      //console.log(this);
+    },
+    
+    btnBrowseTapped: function(event, detail, sender) {
+      var e = this;
+      //console.log(chrome.fileSystem);
+      chrome.fileSystem.chooseEntry({
+        type: "openDirectory"
+      }, function(entry) {
+        chrome.fileSystem.getDisplayPath(entry, function(path){
+          e.filePath = path;
+        });
+      });
+    },
   });
   
   ;

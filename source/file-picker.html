@@ -4,7 +4,7 @@
 
 <polymer-element name="file-picker" attributes="label filePath">
   <template>
-    <style>
+    <style shim-shadowdom>
     :host {
       display: block;
       position: relative;
@@ -22,16 +22,27 @@
     </style>
     
       <paper-input id="sourceFolder" label="{{label}}" floatingLabel="true" value="{{filePath}}"></paper-input>
-  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF"></paper-icon-button>
-    
-    
+  	  <paper-icon-button id="btnSourceFolder" icon="folder" style="fill:#FFF" on-tap="{{btnBrowseTapped}}"></paper-icon-button>
     
   </template>
   <script>
   Polymer('file-picker', {
+    
     created: function(){
       //console.log(this);
-    }
+    },
+    
+    btnBrowseTapped: function(event, detail, sender) {
+      var e = this;
+
+      chrome.fileSystem.chooseEntry({
+        type: "openDirectory"
+      }, function(entry) {
+        chrome.fileSystem.getDisplayPath(entry, function(path){
+          e.filePath = path;
+        });
+      });
+    },
   });
   
   </script>
